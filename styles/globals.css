@@ -23,8 +23,8 @@ ul {
 }
 
 ul {
-  padding: 0;
-  list-style: none;
+  padding: 16px;
+  list-style: outside;
 }
 
 a {
