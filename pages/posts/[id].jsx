@@ -1,42 +1,51 @@
 import Head from "next/head";
 
-import { getAllPostIds, getPostData } from "../../lib/posts";
+import {
+  // getAllPostIds,
+  // getPostData,
+  getAllPostsId,
+  getPost,
+} from "../../lib/posts";
 import utilStyles from "../../styles/util.module.css";
 import Layout from "../../components/layout";
 import Date from "../../components/date";
 
 // Fetch list of all post ids as static paths
 export async function getStaticPaths() {
-  const paths = await getAllPostIds();
+  const ids = await getAllPostsId();
   return {
-    paths,
+    paths: ids.map((id) => ({
+      params: {
+        id,
+      },
+    })),
     fallback: false,
   };
 }
 
-// Fetch post data based on id as static props
+// Fetch a post based on id as static props
 export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+  const post = await getPost(params.id);
   return {
     props: {
-      postData,
+      post,
     },
   };
 }
 
-export default function Post({ postData }) {
+export default function Post({ post }) {
   return (
     <Layout>
       <Head>
-        <title>{postData.title}</title>
+        <title>{post.title}</title>
       </Head>
-      <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+      <h1 className={utilStyles.headingXl}>{post.title}</h1>
       <div className={utilStyles.lightText}>
-        <Date dateString={postData.date} />
+        <Date dateString={post.created} />
       </div>
       <div
         className={utilStyles.paddingVertical}
-        dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
+        dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
     </Layout>
   );

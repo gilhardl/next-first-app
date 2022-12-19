@@ -1,32 +1,32 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import { getSortedPostsData } from "../lib/posts";
+import { getSortedPostsMeta } from "../lib/posts";
 import utilStyles from "../styles/util.module.css";
 import Layout, { siteTitle } from "../components/layout";
 import Date from "../components/date";
 
 // Static Site Generation
 export async function getStaticProps() {
-  const allPostsData = await getSortedPostsData();
+  const allPosts = await getSortedPostsMeta();
   return {
     props: {
-      allPostsData,
+      allPosts,
     },
   };
 }
 
 // Server Side Rendering
 // export async function getServerSideProps() {
-//   const allPostsData = getSortedPostsData();
+//   const allPosts = getSortedPostsMeta();
 //   return {
 //     props: {
-//       allPostsData,
+//       allPosts,
 //     },
 //   };
 // }
 
-export default function Home({ allPostsData }) {
+export default function Home({ allPosts }) {
   return (
     <Layout home>
       <Head>
@@ -42,12 +42,12 @@ export default function Home({ allPostsData }) {
       <section className={`${utilStyles.paddingVertical}`}>
         <h2 className={utilStyles.headingLg}>Articles</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>{title}</Link>
+          {allPosts.map((post) => (
+            <li className={utilStyles.listItem} key={post.id}>
+              <Link href={`/posts/${post.id}`}>{post.title}</Link>
               <br />
               <small className={utilStyles.lightText}>
-                <Date dateString={date} />
+                <Date dateString={post.created} />
               </small>
             </li>
           ))}
