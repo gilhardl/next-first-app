@@ -40,7 +40,7 @@ export default function Home({ allPostsData }) {
         </p>
       </section>
       <section className={`${utilStyles.paddingVertical}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <h2 className={utilStyles.headingLg}>Articles</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
